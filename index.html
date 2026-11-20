@@ -162,6 +162,32 @@
             Solo se muestran pedidos confirmados. Un bloqueo no libera la
             reserva.
           </p>
+          <label id="warehouse-login" hidden
+            >Clave de almacén<input
+              type="password"
+              id="warehouse-key"
+              maxlength="512"
+              autocomplete="off"
+          /></label>
+          <form id="prep-form" class="review-box" hidden>
+            <strong id="prep-title"></strong>
+            <p id="prep-help"></p>
+            <label id="found-field" hidden
+              >Unidades encontradas<input
+                id="found-quantity"
+                type="number"
+                min="0"
+                step="1"
+            /></label>
+            <div>
+              <button type="submit" id="prep-submit" class="primary">
+                Confirmar preparación
+              </button>
+              <button type="button" id="prep-cancel" class="ghost">
+                Cancelar
+              </button>
+            </div>
+          </form>
           <div class="warehouse-grid">
             <section class="panel">
               <div class="eyebrow">PREPARACIÓN</div>
@@ -170,6 +196,21 @@
                 <span class="pill confirmed" id="ready-count">0</span>
               </h3>
               <div id="ready-list"></div>
+            </section>
+            <section class="panel">
+              <div class="eyebrow">CONTEO FÍSICO</div>
+              <h3>
+                En preparación <span class="pill" id="working-count">0</span>
+              </h3>
+              <div id="working-list"></div>
+            </section>
+            <section class="panel">
+              <div class="eyebrow">SIGUIENTE PASO: DESPACHO</div>
+              <h3>
+                Preparados
+                <span class="pill confirmed" id="packed-count">0</span>
+              </h3>
+              <div id="packed-list"></div>
             </section>
             <section class="panel">
               <div class="eyebrow">REQUIEREN ATENCIÓN</div>

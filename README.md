@@ -3,6 +3,6 @@
 
 - **Mostrador:** dos borradores compiten por el último cupo de reparto. Cotizar no reserva nada.
 - **Administración:** selecciona «Acreditar pago» en **FRE-110**, revisa el pedido y confirma la decisión. No hay conexión con bancos ni cobros reales.
-- **Almacén:** **FRE-110** pasa de bloqueados a listos; **SEN-220** tiene una diferencia y **JUN-305** ya está listo. Un bloqueo no suelta el cupo reservado.
+- **Almacén:** **FRE-110** pasa de bloqueados a listos; **SEN-220** tiene una diferencia y **JUN-305** ya está listo. Un bloqueo no suelta el cupo reservado. Con JUN-305 prueba **Iniciar preparación → Marcar preparado**. RET-410 ya está en preparación: pulsa **Reportar faltante**, introduce 1 unidad encontrada de 3 y confirma. El pedido queda bloqueado. Los faltantes no se resuelven ni se despachan en este corte.
 
 Los roles son simulados. Solo se guarda el estado en tu navegador. Si ya habías usado la demo, pulsa **Reiniciar demo** para cargar los nuevos ejemplos; esto reemplaza tus datos locales de demostración.

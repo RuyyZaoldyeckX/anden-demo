@@ -5,6 +5,7 @@ import {
   reservationNeeded,
 } from "./shared/order-rules.mjs";
 
+import { nextPreparation } from "./shared/preparation.mjs";
 import { paymentChangeNeeded } from "./shared/payment.mjs";
 
 export function initial() {
@@ -37,6 +38,9 @@ export function createDraft(state, input, id) {
     slotId: null,
     paymentStatus: "pending",
     paymentReviewedAt: null,
+    prepStatus: "not_started",
+    foundQuantity: null,
+    prepUpdatedAt: null,
   };
   state.orders.unshift(order);
   return order;
@@ -64,6 +68,14 @@ export function confirm(state, id, slotId) {
   state.slots.find((slot) => slot.id === slotId).remaining--;
   order.status = "confirmed";
   order.slotId = slotId;
+  return order;
+}
+
+export function prepare(state, id, command) {
+  const order = requiredOrder(state, id),
+    change = nextPreparation(order, command);
+  if (change)
+    Object.assign(order, change, { prepUpdatedAt: new Date().toISOString() });
   return order;
 }
 

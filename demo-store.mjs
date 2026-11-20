@@ -6,6 +6,7 @@ import {
   confirm,
   verifyStock,
   reviewPayment,
+  prepare,
 } from "./demo-domain.mjs";
 let pending;
 function open() {
@@ -47,6 +48,9 @@ export const demo = {
       orders: s.orders.map((order) => ({
         paymentStatus: "pending",
         paymentReviewedAt: null,
+        prepStatus: "not_started",
+        foundQuantity: null,
+        prepUpdatedAt: null,
         ...order,
       })),
     })),
@@ -55,6 +59,7 @@ export const demo = {
   quote: (id) => transaction(false, (s) => quote(s, id)),
   confirm: (id, slot) => transaction(true, (s) => confirm(s, id, slot)),
   verifyStock: (id) => transaction(true, (s) => verifyStock(s, id)),
+  prepare: (id, command) => transaction(true, (s) => prepare(s, id, command)),
   reviewPayment: (id, decision) =>
     transaction(true, (s) => reviewPayment(s, id, decision)),
   reset: () => transaction(true, (s) => Object.assign(s, initial())),

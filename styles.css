@@ -505,3 +505,14 @@ footer {
     white-space: normal;
   }
 }
+#warehouse-login,
+#found-field {
+  max-width: 22rem;
+  margin: 12px 0;
+}
+#prep-form {
+  margin-bottom: 14px;
+}
+#prep-form p {
+  margin: 0;
+}

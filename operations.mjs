@@ -1,4 +1,4 @@
-import { warehouseStatus } from "./shared/payment.mjs";
+import { warehouseView } from "./warehouse.mjs";
 
 const $ = (id) => document.getElementById(id);
 const element = (tag, text, cls) => {
@@ -101,36 +101,19 @@ export function operations({ client, isDemo, refresh, broadcast }) {
       message("No se pudo actualizar la cola. Pulsa Actualizar.", true);
     }
   };
+  const warehouse = warehouseView({
+    client,
+    isDemo,
+    refresh,
+    broadcast,
+    row,
+    control,
+    message,
+  });
   function render(orders) {
     if (page === "sales") return;
     const confirmed = orders.filter((o) => o.status === "confirmed");
-    if (page === "warehouse") {
-      const ready = $("ready-list"),
-        blocked = $("blocked-list");
-      ready.replaceChildren();
-      blocked.replaceChildren();
-      for (const o of confirmed) {
-        const status = warehouseStatus(o),
-          card = row(o);
-        card.append(
-          element(
-            "span",
-            status.ready ? "Listo para preparar" : status.reason,
-            status.ready ? "pill confirmed" : "pill warning",
-          ),
-        );
-        (status.ready ? ready : blocked).append(card);
-      }
-      for (const [id, list, placeholder] of [
-        ["ready-count", ready, "Ningún pedido listo por ahora."],
-        ["blocked-count", blocked, "No hay pedidos bloqueados."],
-      ]) {
-        $(id).textContent = String(list.childElementCount);
-        if (!list.childElementCount)
-          list.append(element("p", placeholder, "muted"));
-      }
-      return;
-    }
+    if (page === "warehouse") return warehouse.render(confirmed);
     const list = $("payment-list");
     list.replaceChildren();
     const arranged = [...confirmed].sort(
@@ -173,6 +156,8 @@ export function operations({ client, isDemo, refresh, broadcast }) {
   }
   async function navigate(next) {
     if (writing) return;
+    if (warehouse.busy) return;
+    if (next !== "warehouse") warehouse.leave();
     page = next;
     clearChoice();
     message("");
@@ -187,7 +172,7 @@ export function operations({ client, isDemo, refresh, broadcast }) {
     $("admin-login").hidden = isDemo;
     $("op-mode").textContent = isDemo
       ? "Demo ficticia · Los roles se simulan en este navegador."
-      : "Piloto local · Solo administración puede registrar una revisión.";
+      : "Piloto local · Administración revisa pagos; almacén registra la preparación.";
     try {
       await refresh();
     } catch {

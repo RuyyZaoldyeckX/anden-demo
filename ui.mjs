@@ -93,6 +93,14 @@ function render() {
       el("b", o.sku),
       el("small", o.seller + " · " + o.zone + " · " + o.quantity + " ud."),
     );
+    if (o.prepStatus === "shortage")
+      text.append(
+        el(
+          "small",
+          "Faltante en almacén · requiere seguimiento",
+          "pill warning",
+        ),
+      );
     row.append(
       text,
       el(
@@ -138,6 +146,18 @@ function render() {
   );
   detail.append(header);
   if (o.status === "confirmed") {
+    if (o.prepStatus === "shortage")
+      detail.append(
+        el(
+          "p",
+          "Faltante en almacén: " +
+            o.foundQuantity +
+            " de " +
+            o.quantity +
+            " unidades encontradas. Contacta al cliente antes de cambiar la promesa.",
+          "pill warning",
+        ),
+      );
     detail.append(
       el("b", name(o.slotId) + " confirmado"),
       el(
