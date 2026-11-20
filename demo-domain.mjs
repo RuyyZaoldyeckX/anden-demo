@@ -5,12 +5,11 @@ import {
   reservationNeeded,
 } from "./shared/order-rules.mjs";
 
+import { paymentChangeNeeded } from "./shared/payment.mjs";
+
 export function initial() {
   return {
-    orders: [
-      { id: "ejemplo-centro", sku: "FIL-204", quantity: 1, zone: "Centro", stockVerified: true, seller: "Mostrador A", status: "draft", slotId: null },
-      { id: "ejemplo-norte", sku: "COR-018", quantity: 2, zone: "Norte", stockVerified: true, seller: "Mostrador B", status: "draft", slotId: null }
-    ],
+    orders: [],
     slots: [
       {
         id: "delivery",
@@ -31,7 +30,14 @@ export function initial() {
 }
 
 export function createDraft(state, input, id) {
-  const order = { id, ...draftFields(input), status: "draft", slotId: null };
+  const order = {
+    id,
+    ...draftFields(input),
+    status: "draft",
+    slotId: null,
+    paymentStatus: "pending",
+    paymentReviewedAt: null,
+  };
   state.orders.unshift(order);
   return order;
 }
@@ -58,5 +64,14 @@ export function confirm(state, id, slotId) {
   state.slots.find((slot) => slot.id === slotId).remaining--;
   order.status = "confirmed";
   order.slotId = slotId;
+  return order;
+}
+
+export function reviewPayment(state, id, decision) {
+  const order = requiredOrder(state, id);
+  if (paymentChangeNeeded(order, decision)) {
+    order.paymentStatus = decision;
+    order.paymentReviewedAt = new Date().toISOString();
+  }
   return order;
 }

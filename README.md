@@ -1,6 +1,8 @@
-# Andén · Demo de la mesa de pedidos
-[Abrir la demo](https://ruyyzaoldyeckx.github.io/anden-demo/).
+# Andén · Demo de una tienda de repuestos
+[Abrir la demo](https://ruyyzaoldyeckx.github.io/anden-demo/). No requiere cuenta. Todos los pedidos precargados son ficticios.
 
-Dos borradores ficticios, un cupo de reparto y dos de retiro. Abre un pedido, pulsa **Cotizar opciones** y confirma una modalidad. Para probar la competencia por el último cupo, abre cada pedido en una pestaña del mismo navegador y cotiza los dos antes de confirmar.
+- **Mostrador:** dos borradores compiten por el último cupo de reparto. Cotizar no reserva nada.
+- **Administración:** selecciona «Acreditar pago» en **FRE-110**, revisa el pedido y confirma la decisión. No hay conexión con bancos ni cobros reales.
+- **Almacén:** **FRE-110** pasa de bloqueados a listos; **SEN-220** tiene una diferencia y **JUN-305** ya está listo. Un bloqueo no suelta el cupo reservado.
 
-Demo estática de GitHub Pages: sin servidor, sin registro y sin datos de clientes. Usa solamente ejemplos ficticios. Los cambios se conservan en ese navegador y no se comparten entre dispositivos. **Reiniciar demo** restaura los ejemplos.
+Los roles son simulados. Solo se guarda el estado en tu navegador. Si ya habías usado la demo, pulsa **Reiniciar demo** para cargar los nuevos ejemplos; esto reemplaza tus datos locales de demostración.

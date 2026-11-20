@@ -1,9 +1,11 @@
+import { initial } from "./sample-orders.mjs";
 import {
-  initial,
+
   createDraft,
   quote,
   confirm,
   verifyStock,
+  reviewPayment,
 } from "./demo-domain.mjs";
 let pending;
 function open() {
@@ -39,11 +41,21 @@ async function transaction(write, fn) {
   });
 }
 export const demo = {
-  state: () => transaction(false, (s) => s),
+  state: () =>
+    transaction(false, (s) => ({
+      ...s,
+      orders: s.orders.map((order) => ({
+        paymentStatus: "pending",
+        paymentReviewedAt: null,
+        ...order,
+      })),
+    })),
   create: (data) =>
     transaction(true, (s) => createDraft(s, data, crypto.randomUUID())),
   quote: (id) => transaction(false, (s) => quote(s, id)),
   confirm: (id, slot) => transaction(true, (s) => confirm(s, id, slot)),
   verifyStock: (id) => transaction(true, (s) => verifyStock(s, id)),
+  reviewPayment: (id, decision) =>
+    transaction(true, (s) => reviewPayment(s, id, decision)),
   reset: () => transaction(true, (s) => Object.assign(s, initial())),
 };

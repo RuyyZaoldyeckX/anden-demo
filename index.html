@@ -34,81 +34,154 @@
         </div>
         <div class="stamp">SEDE ÚNICA<br /><strong>Repuestos</strong></div>
       </div>
-      <section class="capacity" aria-label="Capacidad disponible">
-        <div class="cap-title">
-          <div class="eyebrow light">CAPACIDAD DE JORNADA</div>
-          <h2>Cupos disponibles</h2>
-          <small>Un cupo por pedido pequeño.</small>
-        </div>
-        <div id="slots"><span>Cargando disponibilidad…</span></div>
-      </section>
-      <div class="desk">
-        <section class="panel">
-          <div class="section-head">
-            <div class="eyebrow">CAPTURA</div>
-            <h2>Nuevo pedido</h2>
-            <p>Registra la solicitud. El borrador no consume cupos.</p>
+      <nav class="views" aria-label="Áreas de trabajo">
+        <button type="button" data-view="sales" aria-pressed="true">
+          Mostrador
+        </button>
+        <button type="button" data-view="admin" aria-pressed="false">
+          Administración
+        </button>
+        <button type="button" data-view="warehouse" aria-pressed="false">
+          Almacén
+        </button>
+      </nav>
+      <div id="sales-panel">
+        <section class="capacity" aria-label="Capacidad disponible">
+          <div class="cap-title">
+            <div class="eyebrow light">CAPACIDAD DE JORNADA</div>
+            <h2>Cupos disponibles</h2>
+            <small>Un cupo por pedido pequeño.</small>
           </div>
-          <form id="new-order">
-            <label
-              >Código de pieza<input
-                name="sku"
-                required
-                maxlength="80"
-                placeholder="Ej. FIL-204"
-            /></label>
-            <div class="pair">
-              <label
-                >Cantidad<input
-                  name="quantity"
-                  type="number"
-                  min="1"
-                  max="9999"
-                  value="1"
-                  required /></label
-              ><label
-                >Zona<select name="zone">
-                  <option>Centro</option>
-                  <option>Norte</option>
-                </select></label
-              >
-            </div>
-            <label
-              >Vendedor<input
-                name="seller"
-                required
-                maxlength="80"
-                value="Mostrador A"
-            /></label>
-            <label class="check"
-              ><input name="stockVerified" type="checkbox" /><span
-                >Existencia verificada<small
-                  >La pieza y la cantidad se comprobaron en tienda.</small
-                ></span
-              ></label
-            >
-            <button type="submit" class="primary">Crear borrador</button>
-          </form>
+          <div id="slots"><span>Cargando disponibilidad…</span></div>
         </section>
-        <section class="panel promise">
-          <div class="section-head">
-            <div class="eyebrow">DECISIÓN</div>
-            <h2>Promesas y cupos</h2>
-            <p>Cotiza primero. Confirma solo cuando el cliente acepte.</p>
+        <div class="desk">
+          <section class="panel">
+            <div class="section-head">
+              <div class="eyebrow">CAPTURA</div>
+              <h2>Nuevo pedido</h2>
+              <p>Registra la solicitud. El borrador no consume cupos.</p>
+            </div>
+            <form id="new-order">
+              <label
+                >Código de pieza<input
+                  name="sku"
+                  required
+                  maxlength="80"
+                  placeholder="Ej. FIL-204"
+              /></label>
+              <div class="pair">
+                <label
+                  >Cantidad<input
+                    name="quantity"
+                    type="number"
+                    min="1"
+                    max="9999"
+                    value="1"
+                    required /></label
+                ><label
+                  >Zona<select name="zone">
+                    <option>Centro</option>
+                    <option>Norte</option>
+                  </select></label
+                >
+              </div>
+              <label
+                >Vendedor<input
+                  name="seller"
+                  required
+                  maxlength="80"
+                  value="Mostrador A"
+              /></label>
+              <label class="check"
+                ><input name="stockVerified" type="checkbox" /><span
+                  >Existencia verificada<small
+                    >La pieza y la cantidad se comprobaron en tienda.</small
+                  ></span
+                ></label
+              >
+              <button type="submit" class="primary">Crear borrador</button>
+            </form>
+          </section>
+          <section class="panel promise">
+            <div class="section-head">
+              <div class="eyebrow">DECISIÓN</div>
+              <h2>Promesas y cupos</h2>
+              <p>Cotiza primero. Confirma solo cuando el cliente acepte.</p>
+            </div>
+            <div id="detail"></div>
+            <p id="notice" role="status" aria-live="polite"></p>
+          </section>
+        </div>
+        <section class="ledger">
+          <div class="ledger-head">
+            <div>
+              <div class="eyebrow">SEGUIMIENTO</div>
+              <h2>Pedidos de la jornada</h2>
+            </div>
+            <button id="refresh" class="ghost">Actualizar</button>
           </div>
-          <div id="detail"></div>
-          <p id="notice" role="status" aria-live="polite"></p>
+          <div id="orders"></div>
         </section>
       </div>
-      <section class="ledger">
-        <div class="ledger-head">
+      <section id="ops-panel" hidden>
+        <div class="ops-head">
           <div>
-            <div class="eyebrow">SEGUIMIENTO</div>
-            <h2>Pedidos de la jornada</h2>
+            <div class="eyebrow">OPERACIONES</div>
+            <h2>Pedidos y bloqueos</h2>
+            <p id="op-mode" class="muted"></p>
           </div>
-          <button id="refresh" class="ghost">Actualizar</button>
+          <button id="op-refresh" class="ghost">Actualizar cola</button>
         </div>
-        <div id="orders"></div>
+        <div id="admin-panel" class="panel" hidden>
+          <h3>Revisión de pagos</h3>
+          <p>
+            Contrasta el pago de cada pedido confirmado antes de habilitar su
+            preparación.
+          </p>
+          <label id="admin-login" hidden
+            >Clave de administración<input
+              type="password"
+              id="admin-key"
+              maxlength="512"
+              autocomplete="off"
+          /></label>
+          <div id="payment-list"></div>
+          <div id="review-box" class="review-box" hidden>
+            <strong id="review-title"></strong>
+            <p id="review-detail"></p>
+            <button type="button" id="review-submit" class="primary">
+              Confirmar revisión
+            </button>
+            <button type="button" id="review-cancel" class="ghost">
+              Cancelar
+            </button>
+          </div>
+        </div>
+        <div id="warehouse-panel" hidden>
+          <p>
+            Solo se muestran pedidos confirmados. Un bloqueo no libera la
+            reserva.
+          </p>
+          <div class="warehouse-grid">
+            <section class="panel">
+              <div class="eyebrow">PREPARACIÓN</div>
+              <h3>
+                Listos para preparar
+                <span class="pill confirmed" id="ready-count">0</span>
+              </h3>
+              <div id="ready-list"></div>
+            </section>
+            <section class="panel">
+              <div class="eyebrow">REQUIEREN ATENCIÓN</div>
+              <h3>
+                Bloqueados
+                <span class="pill warning" id="blocked-count">0</span>
+              </h3>
+              <div id="blocked-list"></div>
+            </section>
+          </div>
+        </div>
+        <p id="op-notice" role="status" aria-live="polite"></p>
       </section>
       <footer>
         <span id="scope"></span

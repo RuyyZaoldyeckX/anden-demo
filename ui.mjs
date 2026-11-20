@@ -1,3 +1,4 @@
+import { operations } from "./operations.mjs";
 import { client, isDemo } from "./client.mjs";
 const $ = (id) => document.getElementById(id);
 const view = { orders: [], slots: [], active: null, quote: null, busy: false };
@@ -49,7 +50,14 @@ function empty(title, subtitle) {
   box.append(el("b", title), el("p", subtitle));
   return box;
 }
+const ops = operations({
+  client,
+  isDemo,
+  refresh: read,
+  broadcast: () => channel?.postMessage("refresh"),
+});
 function render() {
+  ops.render(view.orders);
   const slots = $("slots");
   slots.replaceChildren();
   for (const s of view.slots) {
